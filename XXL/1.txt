@@ -1,0 +1,157 @@
+protected void xiaojubu(int x, int y) {
+		String color = jb[x][y].getIcon().toString();
+		if ("0.png".equals(color)) {
+			return;
+		}
+		// 先判断左面存在不，然后和左面比颜色
+		if (x - 1 >= 0 && color.equals(jb[x - 1][y].getIcon().toString())) {
+			// 左面颜色相同，再看左左颜色相同吗
+			if (x - 1 - 1 >= 0
+					&& color.equals(jb[x - 1 - 1][y].getIcon().toString())) {
+				// 换背景，让用户看到消除哪几个
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x - 1][y].setBackground(Color.ORANGE);
+				jb[x - 1 - 1][y].setBackground(Color.ORANGE);
+				// 在线程睡觉之前一定要刷新一下画布，不然无法显示应该出现的画面
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				// 消除每个图片
+				xiao(x, y);
+				xiao(x - 1, y);
+				xiao(x - 1 - 1, y);
+				//消成功之后，计数要加一
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x - 1][y].setBackground(Color.WHITE);
+				jb[x - 1 - 1][y].setBackground(Color.WHITE);
+				// 按照每个坐标来掉落上面的图片
+				diaoluo(x, y);
+				diaoluo(x - 1, y);
+				diaoluo(x - 1 - 1, y);
+			}
+			// 左面颜色相同，左左颜色不同，再看右面颜色相同吗
+			else if (x + 1 <= 7
+					&& color.equals(jb[x + 1][y].getIcon().toString())) {
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x - 1][y].setBackground(Color.ORANGE);
+				jb[x + 1][y].setBackground(Color.ORANGE);
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				xiao(x, y);
+				xiao(x - 1, y);
+				xiao(x + 1, y);
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x - 1][y].setBackground(Color.WHITE);
+				jb[x + 1][y].setBackground(Color.WHITE);
+				diaoluo(x, y);
+				diaoluo(x - 1, y);
+				diaoluo(x + 1, y);
+			}
+		}
+		// 判断完左面，再看右面
+		else if (x + 1 <= 7 && color.equals(jb[x + 1][y].getIcon().toString())) {
+			if (x + 1 + 1 <= 7
+					&& color.equals(jb[x + 1 + 1][y].getIcon().toString())) {
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x + 1 + 1][y].setBackground(Color.ORANGE);
+				jb[x + 1][y].setBackground(Color.ORANGE);
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				xiao(x, y);
+				xiao(x + 1, y);
+				xiao(x + 1 + 1, y);
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x + 1 + 1][y].setBackground(Color.WHITE);
+				jb[x + 1][y].setBackground(Color.WHITE);
+				diaoluo(x, y);
+				diaoluo(x + 1, y);
+				diaoluo(x + 1 + 1, y);
+			}
+		}
+
+		// 上下同左右判断
+		// 先判断上
+		if (y - 1 >= 0 && color.equals(jb[x][y - 1].getIcon().toString())) {
+			if (y - 1 - 1 >= 0
+					&& color.equals(jb[x][y - 1 - 1].getIcon().toString())) {
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x][y - 1].setBackground(Color.ORANGE);
+				jb[x][y - 1 - 1].setBackground(Color.ORANGE);
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				xiao(x, y);
+				xiao(x, y - 1);
+				xiao(x, y - 1 - 1);
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x][y - 1].setBackground(Color.WHITE);
+				jb[x][y - 1 - 1].setBackground(Color.WHITE);
+				for (int a = 0; a < 3; a++) {
+					diaoluo(x, y);
+				}
+			} else if (y + 1 <= 7
+					&& color.equals(jb[x][y + 1].getIcon().toString())) {
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x][y - 1].setBackground(Color.ORANGE);
+				jb[x][y + 1].setBackground(Color.ORANGE);
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				xiao(x, y + 1);
+				xiao(x, y);
+				xiao(x, y - 1);
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x][y - 1].setBackground(Color.WHITE);
+				jb[x][y + 1].setBackground(Color.WHITE);
+				for (int a = 0; a < 3; a++) {
+					diaoluo(x, y + 1);
+				}
+			}
+		} else if (y + 1 <= 7
+				&& color.equals(jb[x][y + 1].getIcon().toString())) {
+			if (y + 1 + 1 <= 7
+					&& color.equals(jb[x][y + 1 + 1].getIcon().toString())) {
+				jb[x][y].setBackground(Color.ORANGE.brighter());
+				jb[x][y + 1].setBackground(Color.ORANGE);
+				jb[x][y + 1 + 1].setBackground(Color.ORANGE);
+				this.update(this.getGraphics());
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				xiao(x, y + 1 + 1);
+				xiao(x, y + 1);
+				xiao(x, y);
+				count++;
+				jb[x][y].setBackground(Color.WHITE);
+				jb[x][y + 1].setBackground(Color.WHITE);
+				jb[x][y + 1 + 1].setBackground(Color.WHITE);
+				for (int a = 0; a < 3; a++) {
+					diaoluo(x, y + 1 + 1);
+				}
+			}
+		}
+	}
